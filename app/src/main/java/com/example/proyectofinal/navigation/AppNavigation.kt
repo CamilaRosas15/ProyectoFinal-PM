@@ -9,18 +9,21 @@ import androidx.navigation.compose.rememberNavController
 import com.example.proyectofinal.features.auth.presentation.login.AuthScreen
 import com.example.proyectofinal.features.dollar.presentarion.DollarScreen
 import com.example.proyectofinal.features.github.presentation.GithubScreen
+import com.example.proyectofinal.features.notification.presentation.NotificationScreen
+import com.example.proyectofinal.features.notification.presentation.NotificationViewModel
 import com.example.proyectofinal.features.practica.presentation.CardScreen
 import com.example.proyectofinal.features.profile.application.ProfileScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
-
+    val notificationViewModel: NotificationViewModel = koinViewModel()
     NavHost(
         navController = navController,
         startDestination = Screen.Dollar.route
         //startDestination = Screen.Login.route
-        //startDestination = Screen.Practica.route
+        //startDestination = Screen.Notification.route
     ) {
         composable(Screen.Github.route) {
             GithubScreen(modifier = Modifier)
@@ -39,6 +42,9 @@ fun AppNavigation() {
         }
         composable(Screen.Dollar.route) {
             DollarScreen()
+        }
+        composable(Screen.Notification.route) {
+            NotificationScreen()
         }
     }
 }

@@ -15,6 +15,7 @@ import com.example.proyectofinal.features.github.data.repository.GithubRepositor
 import com.example.proyectofinal.features.github.domain.repository.IGithubRepository
 import com.example.proyectofinal.features.github.domain.usecase.FindByNickNameUseCase
 import com.example.proyectofinal.features.github.presentation.GithubViewModel
+import com.example.proyectofinal.features.notification.presentation.NotificationViewModel
 import com.example.proyectofinal.features.profile.application.ProfileViewModel
 import com.example.proyectofinal.features.profile.data.repository.ProfileRepository
 import com.example.proyectofinal.features.profile.domain.repository.IProfileRepository
@@ -45,4 +46,6 @@ val appModule = module {
     //single<IDollarRepository> { DollarRepository(get()) }
     factory { FetchDollarUseCase(get()) }
     viewModel{ DollarViewModel(get()) }
+
+    viewModel { NotificationViewModel() }
 }
