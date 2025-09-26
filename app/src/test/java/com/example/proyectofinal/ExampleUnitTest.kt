@@ -1,5 +1,7 @@
 package com.example.proyectofinal
 
+import androidx.compose.ui.text.LinkAnnotation
+import com.example.proyectofinal.features.github.domain.model.UrlPath
 import org.junit.Test
 
 import org.junit.Assert.*

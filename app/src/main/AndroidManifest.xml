@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- ¡DECLARA TU NOTIFICATIONSCREENACTIVITY AQUÍ! -->
+        <activity
+            android:name="com.example.proyectofinal.features.notification.presentation.NotificationScreenActivity"
+            android:exported="true"> <!-- ¡IMPORTANTE! Permite que el sistema Android la inicie desde una notificación. -->
+        </activity>
         <service
             android:name=".features.notification.data.service.FirebaseService"
             android:exported="false">
