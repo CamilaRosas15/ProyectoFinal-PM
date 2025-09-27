@@ -12,6 +12,8 @@ import com.example.proyectofinal.features.dollar.data.datasource.RealTimeRemoteD
 import com.example.proyectofinal.features.dollar.domain.repository.IDollarRepository
 import com.example.proyectofinal.features.dollar.domain.usecase.FetchDollarUseCase
 import com.example.proyectofinal.features.dollar.presentarion.DollarViewModel
+import com.example.proyectofinal.features.github.data.api.GithubService
+import com.example.proyectofinal.features.github.data.datasource.GithubRemoteDataSource
 import com.example.proyectofinal.features.github.data.repository.GithubRepository
 import com.example.proyectofinal.features.github.domain.repository.IGithubRepository
 import com.example.proyectofinal.features.github.domain.usecase.FindByNickNameUseCase
@@ -38,8 +40,8 @@ import java.util.concurrent.TimeUnit
 
 
 object NetworkConstants {
-    //const val RETROFIT_GITHUB = "RetrofitGithub"
-    ///const val GITHUB_BASE_URL = "https://api.github.com/"
+    const val RETROFIT_GITHUB = "RetrofitGithub"
+    const val GITHUB_BASE_URL = "https://api.github.com/"
     const val RETROFIT_MOVIE = "RetrofitMovie"
     const val MOVIE_BASE_URL = "https://api.themoviedb.org/"
 }
@@ -53,6 +55,15 @@ val appModule = module {
             .build()
     }
 
+    // Retrofit
+    single(named(NetworkConstants.RETROFIT_GITHUB)) {
+        Retrofit.Builder()
+            .baseUrl(NetworkConstants.GITHUB_BASE_URL)
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
     single(named(NetworkConstants.RETROFIT_MOVIE)) {
         Retrofit.Builder()
             .baseUrl(NetworkConstants.MOVIE_BASE_URL)
@@ -61,9 +72,15 @@ val appModule = module {
             .build()
     }
 
-    single<IGithubRepository>{ GithubRepository() }
+    single<GithubService> {
+        get<Retrofit>( named(NetworkConstants.RETROFIT_GITHUB)).create(GithubService::class.java)
+    }
+    single{ GithubRemoteDataSource(get()) }
+    single<IGithubRepository>{ GithubRepository(get()) }
+
     factory { FindByNickNameUseCase(get()) }
-    viewModel { GithubViewModel(get()) }
+    viewModel { GithubViewModel(get(), get()) }
+
 
     viewModel { ProfileViewModel(get()) }
     factory { GetProfileUseCase(get()) }

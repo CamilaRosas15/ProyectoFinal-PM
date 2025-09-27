@@ -11,4 +11,6 @@ value class UrlPath(val value: String) {
             "UrlPath must not be empty"
         }
     }
+
+    override fun toString(): String = value
 }

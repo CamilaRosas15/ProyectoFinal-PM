@@ -6,4 +6,9 @@
     <string name="gitalias_input">Enter the GitHub account</string>
     <string name="gitalias_btn_find">Find</string>
     <string name="api_key">772db0e1fe3a98d5d0a705e2ebe47797</string>
+    <string name="error_network">No se pudo conectar a Internet. Revisa tu conexión.</string>
+    <string name="error_server">Ocurrió un error en el servidor. Inténtalo más tarde.</string>
+    <string name="error_not_found">Usuario no encontrado.</string>
+    <string name="error_empty_response">No se recibió respuesta del servidor.</string>
+    <string name="error_unknown">Ocurrió un error inesperado. Inténtalo de nuevo.</string>
 </resources>
