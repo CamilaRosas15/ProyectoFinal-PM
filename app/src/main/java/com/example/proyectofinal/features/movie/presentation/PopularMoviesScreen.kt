@@ -14,24 +14,17 @@ fun PopularMoviesScreen(
 ) {
     val state = popularMoviesViewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        popularMoviesViewModel.fetchPopularMovies()
-    }
-
     when (val s = state.value) {
-        is PopularMoviesViewModel.UiState.Error -> {
-            Text(s.message)
-        }
-        is PopularMoviesViewModel.UiState.Loading ->
-            CircularProgressIndicator()
-        is PopularMoviesViewModel.UiState.Success ->
-            PopularMoviesView(
-                movies = s.movies,
-                onLikeClick = { movie ->
-                    popularMoviesViewModel.likeMovie(movie.id, movie.meGusta != 1)
-                }
-            )
-
+        is PopularMoviesViewModel.UiState.Error   -> Text(s.message)
+        is PopularMoviesViewModel.UiState.Loading -> CircularProgressIndicator()
+        is PopularMoviesViewModel.UiState.Success -> PopularMoviesView(
+            movies = s.movies,
+            onLikeClick = { id, newLikeInt ->
+                popularMoviesViewModel.likeMovie(
+                    movieId = id,
+                    liked = (newLikeInt == 1)
+                )
+            }
+        )
     }
-
 }

@@ -29,7 +29,7 @@ import androidx.compose.material3.Icon
 @Composable
 fun PopularMoviesView(
     movies: List<MovieModel>,
-    onLikeClick: (MovieModel) -> Unit
+    onLikeClick: (movieId: Int, newLikeInt: Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -37,8 +37,8 @@ fun PopularMoviesView(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(movies.size) {
-            CardMovie(movie = movies[it], onLikeClick = onLikeClick)
+        items(movies.size) { idx ->
+            CardMovie(movie = movies[idx], onLikeClick = onLikeClick)
         }
     }
 }
@@ -46,7 +46,7 @@ fun PopularMoviesView(
 @Composable
 fun CardMovie(
     movie: MovieModel,
-    onLikeClick: (MovieModel) -> Unit
+    onLikeClick: (movieId: Int, newLikeInt: Int) -> Unit
 ) {
     OutlinedCard(
         modifier = Modifier
@@ -80,15 +80,17 @@ fun CardMovie(
 
             IconButton(
                 onClick = {
-                    // Alterna entre 1 y 0
-                    val newLike = if (movie.meGusta == 1) 0 else 1
-                    onLikeClick(movie.copy(meGusta = newLike))
+                    val current = movie.meGusta ?: 0
+                    val newLike = if (current == 1) 0 else 1
+                    onLikeClick(movie.id, newLike)
                 }
             ) {
+                val isLiked = (movie.meGusta ?: 0) == 1
                 Icon(
-                    imageVector = if (movie.meGusta == 1) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    imageVector = if (isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = "Like",
-                    tint = if (movie.meGusta == 1) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray
+                    tint = if (isLiked) androidx.compose.ui.graphics.Color.Red
+                    else androidx.compose.ui.graphics.Color.Gray
                 )
             }
         }
