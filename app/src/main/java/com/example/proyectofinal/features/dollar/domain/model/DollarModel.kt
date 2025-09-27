@@ -2,6 +2,10 @@ package com.example.proyectofinal.features.dollar.domain.model
 
 
 data class DollarModel(
-    var dollarOfficial: String? = null,
-    var dollarParelelo: String? = null
+    val officialCompra: String? = null,
+    val officialVenta: String? = null,
+    val paraleloCompra: String? = null,
+    val paraleloVenta: String? = null,
+    val timestamp: Long = System.currentTimeMillis(),
+    //val updatedAt: Long? = null
 )

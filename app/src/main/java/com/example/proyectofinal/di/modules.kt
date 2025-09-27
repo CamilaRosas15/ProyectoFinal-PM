@@ -1,6 +1,5 @@
 package com.example.proyectofinal.di
 
-import androidx.compose.foundation.R
 import com.example.proyectofinal.features.auth.data.repository.AuthRepository
 import com.example.proyectofinal.features.auth.domain.repository.IAuthRepository
 import com.example.proyectofinal.features.auth.domain.usecase.AuthUseCase

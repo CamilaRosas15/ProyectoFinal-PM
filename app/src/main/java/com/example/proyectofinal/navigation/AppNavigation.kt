@@ -19,7 +19,7 @@ fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.Github.route
+        startDestination = Screen.Dollar.route
         //startDestination = Screen.Login.route
         //startDestination = Screen.Notification.route
     ) {

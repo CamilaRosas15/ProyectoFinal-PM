@@ -14,6 +14,9 @@ class RealTimeRemoteDataSource {
 
 
     suspend fun getDollarUpdates(): Flow<DollarModel> = callbackFlow {
+        val database = Firebase.database
+        val myRef = database.getReference("dollar")
+
         val callback = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -29,10 +32,6 @@ class RealTimeRemoteDataSource {
             }
         }
 
-
-//         Write a message to the database
-        val database = Firebase.database
-        val myRef = database.getReference("dollar")
         myRef.addValueEventListener(callback)
 
 
