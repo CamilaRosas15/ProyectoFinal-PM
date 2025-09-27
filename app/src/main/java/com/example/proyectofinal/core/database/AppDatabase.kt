@@ -15,7 +15,7 @@ import com.example.proyectofinal.features.movie.data.database.entity.MovieEntity
         DollarEntity::class,
         MovieEntity::class
     ],
-    version = 4, // ⚠ subí la versión para aplicar la nueva estructura
+    version = 9,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -32,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                 Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_db" // un solo archivo físico
+                    "app_db"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

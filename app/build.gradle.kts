@@ -79,4 +79,5 @@ dependencies {
     implementation(libs.coil.network)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

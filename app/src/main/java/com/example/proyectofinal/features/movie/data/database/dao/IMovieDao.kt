@@ -7,6 +7,7 @@ import com.example.proyectofinal.features.movie.data.database.entity.MovieEntity
 
 @Dao
 interface IMovieDao {
+
     @Query("SELECT * FROM movies")
     suspend fun getList(): List<MovieEntity>
 
@@ -26,7 +27,7 @@ interface IMovieDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDollars(lists: List<MovieEntity>)
+    suspend fun insertAllMovies(lists: List<MovieEntity>)
 
     @Query("UPDATE movies SET meGusta = :like WHERE id = :movieId")
     suspend fun updateLike(movieId: Int, like: Int)

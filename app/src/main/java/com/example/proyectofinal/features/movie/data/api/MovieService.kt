@@ -6,9 +6,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieService {
-
-    @GET("/3/discover/movie" )
+    @GET("3/movie/popular")
     suspend fun fetchPopularMovies(
-        @Query("sort_by") sortBy : String = "popularity.desc",
-        @Query("api_key") apiKey : String) : Response<MoviePageDto>
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "es-ES",
+        @Query("page") page: Int = 1
+    ): Response<MoviePageDto>
 }

@@ -8,12 +8,14 @@ import com.example.proyectofinal.features.movie.domain.model.MovieModel
 class MovieLocalDataSource(
     private val dao: IMovieDao
 ) {
-    suspend fun getList(): List<MovieModel> = dao.getList().map { it.toModel() }
+    suspend fun getList(): List<MovieModel> =
+        dao.getList()
+            .map { it.toModel() }
 
     suspend fun deleteAll() = dao.deleteAll()
 
     suspend fun insertMovies(list: List<MovieModel>) {
-        dao.insertDollars(list.map { it.toEntity() })
+        dao.insertAllMovies(list.map { it.toEntity() }) // <--- ¡¡¡ACTUALIZADA LA LLAMADA AQUÍ!!!
     }
 
     suspend fun insert(movie: MovieModel) {

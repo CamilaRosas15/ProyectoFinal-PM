@@ -8,24 +8,24 @@ class MovieRemoteDataSource(
     private val movieServie: MovieService,
     private val apiKey: String
 ) {
-    suspend fun fetchPopularMovies(): Result<List<MovieModel>> {
+    suspend fun fetchPopularMovies(): Result<List<MovieModel>> = runCatching {
         val response = movieServie.fetchPopularMovies(apiKey = apiKey)
-        return if (response.isSuccessful) {
-            val moviePage = response.body()
-            if (moviePage != null) {
-                Result.success(moviePage.results.map { dto ->
-                    MovieModel(
-                        id = dto.id,
-                        title = dto.title,
-                        pathUrl = "https://image.tmdb.org/t/p/w185${dto.pathUrl}"
-                    )
-                })
-            } else {
-                Result.success(emptyList())
-            }
-        } else {
-            Result.failure(Exception("Error"))
+
+        if (!response.isSuccessful) {
+            val code = response.code()
+            val body = response.errorBody()?.string().orEmpty()
+            throw Exception("HTTP $code - $body")
+        }
+
+        val moviePage = response.body() ?: return@runCatching emptyList()
+
+        moviePage.results.map { dto ->
+            MovieModel(
+                id = dto.id,
+                title = dto.title,
+                pathUrl = dto.pathUrl?.let { "https://image.tmdb.org/t/p/w185$it" },
+                meGusta = 0
+            )
         }
     }
-
 }

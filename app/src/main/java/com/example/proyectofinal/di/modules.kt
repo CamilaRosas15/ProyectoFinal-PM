@@ -54,6 +54,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import okhttp3.logging.HttpLoggingInterceptor
 
 object NetworkConstants {
     const val RETROFIT_GITHUB = "RetrofitGithub"
@@ -63,15 +64,18 @@ object NetworkConstants {
 }
 
 val appModule = module {
-
     // ============ Room global + DAOs ============
     single { AppDatabase.getDatabase(androidContext()) }
     single<IDollarDao> { get<AppDatabase>().dollarDao() }
     single<IMovieDao>  { get<AppDatabase>().movieDao() }
 
     // ============ OkHttp ============
-    single {
+    single { // Asegúrate de que este es el ÚNICO bloque 'single' para OkHttpClient
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY // Nivel de log para ver peticiones y respuestas
+        }
         OkHttpClient.Builder()
+            .addInterceptor(logging) // <<--- ¡Esta es la línea que añade el interceptor!
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
@@ -135,7 +139,7 @@ val appModule = module {
 
     single { MovieLocalDataSource(get<IMovieDao>()) }
 
-    single<IMoviesRepository> { MovieRepository(get()) }
+    single<IMoviesRepository> { MovieRepository(get(), get()) }
     factory { FetchPopularMoviesUseCase(get()) }
 
     viewModel { PopularMoviesViewModel(get(), get<MovieLocalDataSource>()) }

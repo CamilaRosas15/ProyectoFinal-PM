@@ -6,19 +6,17 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "id")
-    var id: Int = 0,
-
+    val id: Int,                           // <-- SIN autoGenerate
 
     @ColumnInfo(name = "title")
-    var title: String? = null,
+    val title: String? = null,
 
     @ColumnInfo(name = "pathUrl")
-    var pathUrl: String? = null,
+    val pathUrl: String? = null,
 
-
-    @ColumnInfo(name = "meGusta") // 0 o 1 donde 0 no me gusta 1 me gusta
-    var meGusta: Int? = null,
+    @ColumnInfo(name = "meGusta", defaultValue = "0")
+    val meGusta: Int = 0
 
     )
