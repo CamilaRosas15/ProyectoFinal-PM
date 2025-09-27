@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import org.koin.androidx.compose.koinViewModel
 
+
 @Composable
 fun PopularMoviesScreen(
     popularMoviesViewModel: PopularMoviesViewModel = koinViewModel()
@@ -24,7 +25,12 @@ fun PopularMoviesScreen(
         is PopularMoviesViewModel.UiState.Loading ->
             CircularProgressIndicator()
         is PopularMoviesViewModel.UiState.Success ->
-            PopularMoviesView(movies = s.movies)
+            PopularMoviesView(
+                movies = s.movies,
+                onLikeClick = { movie ->
+                    popularMoviesViewModel.likeMovie(movie.id, movie.meGusta != 1)
+                }
+            )
 
     }
 

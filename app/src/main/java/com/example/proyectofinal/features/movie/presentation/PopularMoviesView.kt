@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedCard
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,9 +23,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.proyectofinal.features.movie.domain.model.MovieModel
+import androidx.compose.material3.Icon
+
 
 @Composable
-fun PopularMoviesView( movies: List<MovieModel>) {
+fun PopularMoviesView(
+    movies: List<MovieModel>,
+    onLikeClick: (MovieModel) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -28,13 +38,16 @@ fun PopularMoviesView( movies: List<MovieModel>) {
         contentPadding = PaddingValues(16.dp)
     ) {
         items(movies.size) {
-            CardMovie(movie = movies[it])
+            CardMovie(movie = movies[it], onLikeClick = onLikeClick)
         }
     }
 }
 
 @Composable
-fun CardMovie(movie: MovieModel) {
+fun CardMovie(
+    movie: MovieModel,
+    onLikeClick: (MovieModel) -> Unit
+) {
     OutlinedCard(
         modifier = Modifier
             .padding(4.dp)
@@ -49,7 +62,7 @@ fun CardMovie(movie: MovieModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = movie.pathUrl.value,
+                model = movie.pathUrl,
                 contentDescription = movie.title,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -57,13 +70,27 @@ fun CardMovie(movie: MovieModel) {
             )
 
             Text(
-                text = movie.title,
+                text = movie.title ?: "",
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth(),
                 maxLines = 2
             )
+
+            IconButton(
+                onClick = {
+                    // Alterna entre 1 y 0
+                    val newLike = if (movie.meGusta == 1) 0 else 1
+                    onLikeClick(movie.copy(meGusta = newLike))
+                }
+            ) {
+                Icon(
+                    imageVector = if (movie.meGusta == 1) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = "Like",
+                    tint = if (movie.meGusta == 1) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray
+                )
+            }
         }
     }
 }

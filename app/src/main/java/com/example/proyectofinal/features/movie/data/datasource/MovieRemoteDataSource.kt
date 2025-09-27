@@ -13,11 +13,19 @@ class MovieRemoteDataSource(
         return if (response.isSuccessful) {
             val moviePage = response.body()
             if (moviePage != null) {
-                return Result.success(moviePage.results.map { dto ->  MovieModel(UrlPath("https://image.tmdb.org/t/p/w185"+dto.pathUrl), dto.title) } )
+                Result.success(moviePage.results.map { dto ->
+                    MovieModel(
+                        id = dto.id,
+                        title = dto.title,
+                        pathUrl = "https://image.tmdb.org/t/p/w185${dto.pathUrl}"
+                    )
+                })
+            } else {
+                Result.success(emptyList())
             }
-            Result.success(emptyList())
         } else {
             Result.failure(Exception("Error"))
         }
     }
+
 }
