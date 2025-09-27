@@ -49,7 +49,7 @@ fun CardMovie(movie: MovieModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = movie.pathUrl,
+                model = movie.pathUrl.value,
                 contentDescription = movie.title,
                 modifier = Modifier
                     .fillMaxWidth()

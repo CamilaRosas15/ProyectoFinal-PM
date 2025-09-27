@@ -1,5 +1,6 @@
 package com.example.proyectofinal.features.movie.data.datasource
 
+import com.example.proyectofinal.features.github.domain.model.UrlPath
 import com.example.proyectofinal.features.movie.data.api.MovieService
 import com.example.proyectofinal.features.movie.domain.model.MovieModel
 
@@ -12,7 +13,7 @@ class MovieRemoteDataSource(
         return if (response.isSuccessful) {
             val moviePage = response.body()
             if (moviePage != null) {
-                return Result.success(moviePage.results.map { dto ->  MovieModel("https://image.tmdb.org/t/p/w185"+dto.pathUrl, dto.title) } )
+                return Result.success(moviePage.results.map { dto ->  MovieModel(UrlPath("https://image.tmdb.org/t/p/w185"+dto.pathUrl), dto.title) } )
             }
             Result.success(emptyList())
         } else {

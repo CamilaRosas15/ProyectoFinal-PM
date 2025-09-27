@@ -3,6 +3,7 @@ package com.example.proyectofinal.features.github.data.datasource
 import com.example.proyectofinal.features.github.data.api.GithubService
 import com.example.proyectofinal.features.github.data.api.dto.GithubDto
 import com.example.proyectofinal.features.github.data.error.DataException
+import com.example.proyectofinal.features.github.domain.model.NickName
 import com.example.proyectofinal.features.github.domain.model.UrlPath
 import com.example.proyectofinal.features.github.domain.model.UserModel
 
@@ -16,7 +17,7 @@ class GithubRemoteDataSource(
             if (body != null) {
                 try {
                     return Result.success(UserModel(
-                        body.login,
+                        NickName(body.login),
                         UrlPath(body.url)
                     ))
                 } catch (e: Exception) {
