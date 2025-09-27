@@ -9,19 +9,17 @@ import androidx.navigation.compose.rememberNavController
 import com.example.proyectofinal.features.auth.presentation.login.AuthScreen
 import com.example.proyectofinal.features.dollar.presentarion.DollarScreen
 import com.example.proyectofinal.features.github.presentation.GithubScreen
+import com.example.proyectofinal.features.movie.presentation.PopularMoviesScreen
 import com.example.proyectofinal.features.notification.presentation.NotificationScreen
-import com.example.proyectofinal.features.notification.presentation.NotificationViewModel
 import com.example.proyectofinal.features.practica.presentation.CardScreen
 import com.example.proyectofinal.features.profile.application.ProfileScreen
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
-    val notificationViewModel: NotificationViewModel = koinViewModel()
     NavHost(
         navController = navController,
-        startDestination = Screen.Dollar.route
+        startDestination = Screen.Movie.route
         //startDestination = Screen.Login.route
         //startDestination = Screen.Notification.route
     ) {
@@ -45,6 +43,9 @@ fun AppNavigation() {
         }
         composable(Screen.Notification.route) {
             NotificationScreen()
+        }
+        composable(Screen.Movie.route) {
+            PopularMoviesScreen()
         }
     }
 }

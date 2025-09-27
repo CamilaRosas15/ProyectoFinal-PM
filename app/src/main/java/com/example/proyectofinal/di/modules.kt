@@ -1,5 +1,6 @@
 package com.example.proyectofinal.di
 
+import androidx.compose.foundation.R
 import com.example.proyectofinal.features.auth.data.repository.AuthRepository
 import com.example.proyectofinal.features.auth.domain.repository.IAuthRepository
 import com.example.proyectofinal.features.auth.domain.usecase.AuthUseCase
@@ -15,15 +16,51 @@ import com.example.proyectofinal.features.github.data.repository.GithubRepositor
 import com.example.proyectofinal.features.github.domain.repository.IGithubRepository
 import com.example.proyectofinal.features.github.domain.usecase.FindByNickNameUseCase
 import com.example.proyectofinal.features.github.presentation.GithubViewModel
+import com.example.proyectofinal.features.movie.data.api.MovieService
+import com.example.proyectofinal.features.movie.data.datasource.MovieRemoteDataSource
+import com.example.proyectofinal.features.movie.data.repository.MovieRepository
+import com.example.proyectofinal.features.movie.domain.repository.IMoviesRepository
+import com.example.proyectofinal.features.movie.domain.usecase.FetchPopularMoviesUseCase
+import com.example.proyectofinal.features.movie.presentation.PopularMoviesViewModel
 import com.example.proyectofinal.features.notification.presentation.NotificationViewModel
 import com.example.proyectofinal.features.profile.application.ProfileViewModel
 import com.example.proyectofinal.features.profile.data.repository.ProfileRepository
 import com.example.proyectofinal.features.profile.domain.repository.IProfileRepository
 import com.example.proyectofinal.features.profile.domain.usecase.GetProfileUseCase
+import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
+
+object NetworkConstants {
+    //const val RETROFIT_GITHUB = "RetrofitGithub"
+    ///const val GITHUB_BASE_URL = "https://api.github.com/"
+    const val RETROFIT_MOVIE = "RetrofitMovie"
+    const val MOVIE_BASE_URL = "https://api.themoviedb.org/"
+}
 
 val appModule = module {
+    single {
+        OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    single(named(NetworkConstants.RETROFIT_MOVIE)) {
+        Retrofit.Builder()
+            .baseUrl(NetworkConstants.MOVIE_BASE_URL)
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
     single<IGithubRepository>{ GithubRepository() }
     factory { FindByNickNameUseCase(get()) }
     viewModel { GithubViewModel(get()) }
@@ -48,4 +85,15 @@ val appModule = module {
     viewModel{ DollarViewModel(get()) }
 
     viewModel { NotificationViewModel() }
+
+    single(named("apiKey")) { androidApplication().getString(com.example.proyectofinal.R.string.api_key) }
+
+    single<MovieService> {
+        get<Retrofit>(named(NetworkConstants.RETROFIT_MOVIE)).create(MovieService::class.java)
+    }
+
+    single { MovieRemoteDataSource(get(), get(named("apiKey"))) }
+    single<IMoviesRepository> { MovieRepository(get()) }
+    factory { FetchPopularMoviesUseCase(get()) }
+    viewModel{ PopularMoviesViewModel(get()) }
 }

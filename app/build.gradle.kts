@@ -72,5 +72,9 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
     testImplementation(libs.room.testing)
-
+    //implementation("com.google.code.gson:gson:2.10.1")
+    //implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(libs.gson)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.coil.network)
 }

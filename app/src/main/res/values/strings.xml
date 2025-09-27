@@ -4,4 +4,5 @@
     <string name="home_welcome_text">Bienvenido de nuevo %s!</string>
     <string name="gitalias_input">Ingrese la cuenta de github</string>
     <string name="gitalias_btn_find">Buscar</string>
+    <string name="api_key">772db0e1fe3a98d5d0a705e2ebe47797</string>
 </resources>
